@@ -1,14 +1,18 @@
-# This is a sample Python script.
+import asyncio
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from aiogram import Bot, Dispatcher
+from bot.handlers.app import router as app_router
 
 
-# Press the green button in the gutter to run the script.
+async def main():
+    bot: Bot = Bot("7203647961:AAGJioNjlLllwtoxeK_hJooHy6V9VX1zZXw")
+    dp: Dispatcher = Dispatcher()
+
+    dp.include_router(app_router)
+
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot)
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    asyncio.run(main())
