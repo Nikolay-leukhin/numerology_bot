@@ -10,4 +10,4 @@ router = Router()
 
 @router.message(CommandStart())
 async def process_start(msg: Message):
-    await msg.reply(text=Lexicon.start, reply_markup=Keyboards.web_keyboard())
+    await msg.reply(text=Lexicon.start, reply_markup=Keyboards.start_keyboard())
