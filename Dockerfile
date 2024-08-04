@@ -1,8 +1,13 @@
-FROM python:3.9
-WORKDIR app/
+FROM python:3.12.1-alpine3.19
+
+WORKDIR /numerology_bot
+
+
 COPY requirements.txt requirements.txt
-RUN py -m pip install --upgrade setuptools
-RUN py -m pip install -r requirements.txt
-RUN chmod 755 .
+RUN pip3 install -r requirements.txt
+
 COPY . .
 
+RUN chmod -R 755 .
+
+CMD ["python", "main.py"]
