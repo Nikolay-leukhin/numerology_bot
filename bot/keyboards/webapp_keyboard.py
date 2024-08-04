@@ -1,10 +1,30 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+from typing import List
 
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo, BotCommand
+
+from bot.callback_factories.create_invoice_callback import CreateInvoiceCallBack
 from bot.callback_factories.subscription_callback_factory import SubCallBack
 from data.subscription_repository import SubscriptionRepository
+from models.subscription import SubscriptionModel
 
 
 class Keyboards:
+    main_menu: List[BotCommand] = [
+        BotCommand(
+            command="start",
+            description="Начать"
+        ),
+        BotCommand(
+            command="app",
+            description="Открыть приложение"
+        ),
+        BotCommand(
+            command="buy",
+            description="Купить подписку"
+        ),
+    ]
+
+
     @staticmethod
     def start_keyboard():
         return InlineKeyboardMarkup(
@@ -23,6 +43,20 @@ class Keyboards:
         )
 
     @staticmethod
+    def webapp_keyboard():
+        return InlineKeyboardMarkup(
+            inline_keyboard=[
+                [
+                    InlineKeyboardButton(
+                        text='Открыть',
+                        web_app=WebAppInfo(url="https://fascinating-sable-89d740.netlify.app/")
+                    ),
+                ]
+            ]
+        )
+
+
+    @staticmethod
     def choose_subscription():
         return InlineKeyboardMarkup(
             inline_keyboard=[[InlineKeyboardButton(text=f"{item.name} - {item.price}₽",
@@ -31,7 +65,7 @@ class Keyboards:
         )
 
     @staticmethod
-    def detailed_subscription():
+    def detailed_subscription(sub: SubscriptionModel):
         return InlineKeyboardMarkup(
             inline_keyboard=[
                 [
@@ -43,9 +77,14 @@ class Keyboards:
                 [
                     InlineKeyboardButton(
                         text='Купить',
-                        callback_data="buy_sub"
+                        callback_data=CreateInvoiceCallBack(
+                            name=sub.name
+                        ).pack()
                     ),
                 ]
             ]
         )
+
+
+
 
